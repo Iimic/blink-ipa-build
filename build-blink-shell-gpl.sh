@@ -1282,7 +1282,6 @@ EXPORT_EOF
             cd "$BUILD_DIR"
             rm -f "Blink-unsigned.ipa"
             zip -r -q "Blink-unsigned.ipa" Payload
-            rm -rf "$PAYLOAD_DIR"
             cd "$SCRIPT_DIR"
 
             # Verify the archive really contains a usable app bundle
@@ -1306,6 +1305,7 @@ EXPORT_EOF
             fi
             BUNDLE_ID=$(plutil -extract CFBundleIdentifier raw "$PAYLOAD_DIR/Blink.app/Info.plist" 2>/dev/null || echo "<none>")
             echo "  verified: Info.plist, executable and arm64 slice present (CFBundleIdentifier=$BUNDLE_ID)"
+            rm -rf "$PAYLOAD_DIR"  # only after the checks above, which read from it
 
             mkdir -p "$OUTPUT_DIR"
             if [ "$KEEP_BUILD" = true ]; then
